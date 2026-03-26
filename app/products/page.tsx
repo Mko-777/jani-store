@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Product } from '@/types';
 import ProductCard from '@/components/products/ProductCard';
 
 const CATEGORIES = ['All', 'Bouquets', 'Roses', 'Tulips', 'Special'];
 
-export default function ProductsPage() {
+function ProductsContent() {
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get('category') || 'All';
 
@@ -98,5 +98,17 @@ export default function ProductsPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-ivory flex items-center justify-center">
+        <div className="text-center"><div className="text-4xl mb-4">🌸</div><p>Loading...</p></div>
+      </div>
+    }>
+      <ProductsContent />
+    </Suspense>
   );
 }
